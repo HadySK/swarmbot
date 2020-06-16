@@ -1,0 +1,31 @@
+TrajectoryPlannerROS:
+
+  odom_topic: /rob2/odom
+  map_frame: /map
+  max_vel_x: 0.3
+  min_vel_x: 0.1
+  max_vel_theta:  1.0
+  min_vel_theta: -1.0
+  min_in_place_vel_theta: 0.6
+  acc_lim_x: 0.001
+  acc_lim_y: 0.001
+  acc_lim_theta: 1.0
+  escape_vel: -0.1
+  holonomic_robot: false
+
+  yaw_goal_tolerance: 0.2
+  xy_goal_tolerance: 0.2
+  pdist_scale: 1.0
+  gdist_scale: 1.0
+  occdist_scale: 0.05
+  dwa: false
+  publish_cost_grid_pc: false
+  meter_scoring: true
+  sim_time: 4.0
+  sim_granularity: 0.04
+  vx_samples: 5
+  vtheta_samples: 20
+
+  # control_frequency: 25.0
+
+  max_rotational_vel: 0.6
