@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<launch>
+
+
+
+  <include file="$(find swarmbot)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find swarmbot)/config/model.world"/>
+  </include>
+
+<!--########################## MAP ##############################-->
+  <node name="map_server" pkg="map_server" type="map_server" args="/home/hady/mapfiles/map.yaml">
+    </node>
+  
+  <node pkg="tf" type="static_transform_publisher" name="world_map_static_broadcaster" args="0 0 0 0 0 0 1 world /map 100" />
+
+<!--########################## RVIZ ############################-->
+
+  <arg name="rviz_file1" default="$(find swarmbot)/rviz/rob1.rviz" />
+  <arg name="rviz_file2" default="$(find swarmbot)/rviz/rob2.rviz" />
+  <arg name="rviz_file3" default="$(find swarmbot)/rviz/rob3.rviz" />
+  <node pkg="rviz" type="rviz" name="rviz_rob1" args="-d $(arg rviz_file1)" output="screen"/>
+  <node pkg="rviz" type="rviz" name="rviz_rob2" args="-d $(arg rviz_file2)" output="screen"/>
+  <node pkg="rviz" type="rviz" name="rviz_rob3" args="-d $(arg rviz_file3)" output="screen"/>
+  
+
+
+<!--#############################################################-->
+
+<group ns="rob1">
+<param name="tf_prefix" value="/rob1" />
+
+<node pkg="tf" type="static_transform_publisher" name="map_odom_static_broadcaster" args="0 0 0 0 0 0 1 map /rob1/odom 100" />
+
+<!-- node pkg="tf" type="static_transform_publisher" name="laser_base_rob1_static_broadcaster" args="-0.225 0 0 0 0 0 1 rob1/laser rob1/base_link 100" / -->
+  
+<param name="/rob1/robot_description" command="$(find xacro)/xacro --inorder '$(find swarmbot)/urdf/diff_wheeled_robot.xacro'" /> 
+ 
+  <!-- start robot state publisher -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="rob1_state_publisher" output="screen" />
+
+  <!-- push rob1_description to factory and spawn robot in gazebo -->
+  <node name="spawn_rob1" pkg="gazebo_ros" type="spawn_model" args=" -x -5 -y -2 -urdf -model /rob1_model -param /rob1/robot_description" respawn="false" output="screen" />
+ 
+  
+</group>
+
+<!--#############################################################-->
+<group ns="rob2">
+<param name="tf_prefix" value="/rob2" />
+
+
+<node pkg="tf" type="static_transform_publisher" name="map_odom_static_broadcaster" args="0 0 0 0 0 0 1 map /rob2/odom 100" />
+
+<!--node pkg="tf" type="static_transform_publisher" name="laser_base_rob2_static_broadcaster" args="-0.225 0 0 0 0 0 1 rob2/laser rob2/base_link 100" / -->
+  
+
+<param name="/rob2/robot_description" command="$(find xacro)/xacro --inorder '$(find swarmbot)/urdf/diff_wheeled_robot.xacro'" /> 
+ 
+  <!-- start robot state publisher -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="rob2_state_publisher" output="screen" />
+
+  <!-- push rob2_description to factory and spawn robot in gazebo -->
+  <node name="spawn_rob2" pkg="gazebo_ros" type="spawn_model" args=" -x 2 -y 4 -Y -1.6 -unpause -urdf -model /rob2_model -param /rob2/robot_description" respawn="false" output="screen" />
+ 
+  
+</group>
+
+<!--#############################################################-->
+<group ns="rob3">
+<param name="tf_prefix" value="/rob3" />
+
+
+<node pkg="tf" type="static_transform_publisher" name="map_odom_static_broadcaster" args="0 0 0 0 0 0 1 map /rob3/odom 100" />
+
+<!-- node pkg="tf" type="static_transform_publisher" name="laser_base_rob3_static_broadcaster" args="-0.225 0 0 0 0 0 1 rob3/laser rob3/base_link 100" / -->
+  
+
+<param name="/rob3/robot_description" command="$(find xacro)/xacro --inorder '$(find swarmbot)/urdf/diff_wheeled_robot.xacro'" /> 
+ 
+  <!-- start robot state publisher -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="rob3_state_publisher" output="screen" />
+
+  <!-- push rob3_description to factory and spawn robot in gazebo -->
+  <node name="spawn_rob3" pkg="gazebo_ros" type="spawn_model" args=" -x 5 -y -3 -Y 1.6  -unpause -urdf -model /rob3_model -param /rob3/robot_description" respawn="false" output="screen" />
+ 
+  
+</group>
+
+</launch>
