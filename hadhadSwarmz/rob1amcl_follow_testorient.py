@@ -50,20 +50,25 @@ def callbackrob1g(msg):
     euler = transformations.euler_from_quaternion(quaternion)
     
     yaw_ = euler[2]
-
+    print("robot1_yaw")
+    print(yaw_)
     theta = map_info.origin.orientation.z + yaw_ 
+    # print("map orign")
+    # print(map_info.origin.orientation.z)
+    # print("yaw+origin")
+    # print(theta)
     # goal_rob2.pose.position.x = position_.pose.pose.position.x + shape_dist
     # goal_rob2.pose.position.y = position_.pose.pose.position.y - shape_dist
-    goal_rob2.pose.position.x = (position_.pose.pose.position.x + shape_dist) *math.cos(theta)
-    goal_rob2.pose.position.y = (position_.pose.pose.position.y - shape_dist) *math.sin(theta)
+    goal_rob2.pose.position.x = position_.pose.pose.position.x + (shape_dist + math.cos(yaw_))
+    goal_rob2.pose.position.y = position_.pose.pose.position.y - (shape_dist -math.sin(yaw_))
     
     goal_rob2.pose.orientation.z = position_.pose.pose.orientation.z
     goal_rob2.pose.orientation.w = position_.pose.pose.orientation.w
 
     # goal_rob3.pose.position.x = position_.pose.pose.position.x + shape_dist
     # goal_rob3.pose.position.y = position_.pose.pose.position.y + shape_dist
-    goal_rob3.pose.position.x = (position_.pose.pose.position.x - shape_dist) *math.cos(theta)
-    goal_rob3.pose.position.y = (position_.pose.pose.position.y + shape_dist)  *math.sin(theta)
+    goal_rob3.pose.position.x = position_.pose.pose.position.x - (shape_dist - math.cos(yaw_))
+    goal_rob3.pose.position.y = position_.pose.pose.position.y - (shape_dist + math.sin(yaw_))
     goal_rob3.pose.orientation.z = position_.pose.pose.orientation.z
     goal_rob3.pose.orientation.w = position_.pose.pose.orientation.w  
 
