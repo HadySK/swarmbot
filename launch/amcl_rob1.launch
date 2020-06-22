@@ -4,8 +4,8 @@
 
   <arg name="use_map_topic"  default="false"/>
   <arg name="scan_topic"     default="/rob1/scan"/>
-  <arg name="initial_pose_x" default="-5.0"/>
-  <arg name="initial_pose_y" default="-2.0"/>
+  <arg name="initial_pose_x" default="2.0"/>
+  <arg name="initial_pose_y" default="3.2"/>
   <arg name="initial_pose_a" default="0.0"/>
   <arg name="odom_frame_id" default="rob1_tf/odom"/>
   <arg name="base_frame_id" default="rob1_tf/base_footprint"/>

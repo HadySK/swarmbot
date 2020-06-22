@@ -1,0 +1,5 @@
+  <launch>
+    <node pkg="robot_state_publisher" type="state_publisher" name="rob_st_pub" >
+      <remap from="base_link" to="rob1_tf/base_link" />
+    </node>
+  </launch>

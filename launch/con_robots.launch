@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+
 <launch>
 
 
@@ -12,7 +12,7 @@
 	args="$(find swarmbot)/config/model.world" />
 
 <!--########################  MAP ##############################-->
-  <node name="map_server" pkg="map_server" type="map_server" args="/home/hady/mapfiles/map.yaml">
+  <node name="map_server" pkg="map_server" type="map_server" args="/home/etchzee/mapfiles/map.yaml">
 	<param name="frame_id" value="map" />
     </node>
 
@@ -24,10 +24,11 @@
   <arg name="rviz_file1" default="$(find swarmbot)/rviz/rob1.rviz" />
   <arg name="rviz_file2" default="$(find swarmbot)/rviz/rob2.rviz" />
   <arg name="rviz_file3" default="$(find swarmbot)/rviz/rob3.rviz" />
+  <arg name="rviz_files" default="$(find swarmbot)/rviz/robs.rviz" />
   <node pkg="rviz" type="rviz" name="rviz_rob1" args="-d $(arg rviz_file1)" output="screen"/>
   <node pkg="rviz" type="rviz" name="rviz_rob2" args="-d $(arg rviz_file2)" output="screen"/>
   <node pkg="rviz" type="rviz" name="rviz_rob3" args="-d $(arg rviz_file3)" output="screen"/>
-  
+  <node pkg="rviz" type="rviz" name="rviz_robs" args="-d $(arg rviz_files)" output="screen"/>
 
 
 
@@ -45,7 +46,7 @@
 
 <include file="$(find swarmbot)/launch/con_1rob.launch">
   <arg name="robot_name" value="rob1"/>
-  <arg name="init_pose" value="-x -5 -y -2"/>
+  <arg name="init_pose" value="-x 2.0 -y 3.2 -Y 0.0"/>
 </include>
 
 <include file="$(find swarmbot)/launch/amcl_rob1.launch"/>
@@ -53,7 +54,6 @@
 <include file="$(find swarmbot)/launch/moveb_rob1.launch"/>
 -->
 <include file="$(find swarmbot)/launch/moveb_rob1_reached.launch"/>
-
 </group>
 
 <!--#############################################################-->
@@ -63,7 +63,7 @@
 
 <include file="$(find swarmbot)/launch/con_1rob.launch">
   <arg name="robot_name" value="rob2"/>
-  <arg name="init_pose" value="-x 2 -y 4 -Y -1.6"/>
+  <arg name="init_pose" value="-x 1.5 -y 2.7 -Y 0.7"/>
 </include>
 
 <include file="$(find swarmbot)/launch/amcl_rob2.launch"/>
@@ -80,7 +80,7 @@
 
 <include file="$(find swarmbot)/launch/con_1rob.launch">
   <arg name="robot_name" value="rob3"/>
-  <arg name="init_pose" value="-x 5 -y -3 -Y 1.6"/>
+  <arg name="init_pose" value="-x 1.0 -y 2.8 -Y 0.0"/>
 </include>
 
 <include file="$(find swarmbot)/launch/amcl_rob3.launch"/>
@@ -92,5 +92,22 @@
 
 </group>
 
+<node pkg="swarmbot" type="swarmbot" name="rob1_pub_pose" output="screen" >
+	<param name="base_frame" value="/rob1_tf/base_link"/>
+	<remap from="/robot_pose" to="/rob1/pose" />
+</node>	
+
+<node pkg="swarmbot" type="swarmbot" name="rob2_pub_pose" output="screen" >
+	<param name="base_frame" value="/rob2_tf/base_link"/>
+	<remap from="/robot_pose" to="/rob2/pose" />
+</node>
+
+<node pkg="swarmbot" type="swarmbot" name="rob3_pub_pose" output="screen" >
+	<param name="base_frame" value="/rob3_tf/base_link"/>
+	<remap from="/robot_pose" to="/rob3/pose" />
+</node>
 
 </launch>
+
+
+

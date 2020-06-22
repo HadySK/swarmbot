@@ -8,7 +8,7 @@
   <node name="gazebo" pkg="gazebo_ros" type="gazebo" respawn="false" output="screen"
 	args="$(find swarmbot)/config/model.world" />
 
-<node name="map_server" pkg="map_server" type="map_server" args="/home/hady/mapfiles/map.yaml">
+<node name="map_server" pkg="map_server" type="map_server" args="/home/etchzee/mapfiles/map.yaml">
     </node>
 
 <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find swarmbot)/urdf/diff_wheeled_robot.xacro'" /> 
