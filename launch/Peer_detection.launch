@@ -1,0 +1,25 @@
+
+<launch>
+
+<node pkg="swarmbot" type="Peer_detection.py" name="rob1_peer" output="screen" >
+	<remap from="/pose" to="/rob1/pose" />
+	<remap from="/pose2" to="/rob2/pose" />
+	<remap from="/pose3" to="/rob3/pose" />
+	<remap from="/robots_seen" to="/rob1/robots_seen" />
+</node>	
+
+<node pkg="swarmbot" type="Peer_detection.py" name="rob2_peer" output="screen" >
+	<remap from="/pose" to="/rob2/pose" />
+	<remap from="/pose2" to="/rob1/pose" />
+	<remap from="/pose3" to="/rob3/pose" />
+	<remap from="/robots_seen" to="/rob2/robots_seen" />
+</node>
+
+<node pkg="swarmbot" type="Peer_detection.py" name="rob3_peer" output="screen" >
+	<remap from="/pose" to="/rob3/pose" />
+	<remap from="/pose2" to="/rob1/pose" />
+	<remap from="/pose3" to="/rob2/pose" />
+	<remap from="/robots_seen" to="/rob3/robots_seen" />
+</node>
+
+</launch>

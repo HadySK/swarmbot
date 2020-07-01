@@ -1,0 +1,12 @@
+<launch>
+
+<node pkg="swarmbot" type="Leader_selection.py" name="rob1_leader" output="screen" >
+</node>	
+
+<node pkg="swarmbot" type="Leader_selection.py" name="rob2_leader" output="screen" >
+</node>
+
+<node pkg="swarmbot" type="Leader_selection.py" name="rob3_leader" output="screen" >
+</node>
+
+</launch>
