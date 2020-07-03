@@ -1,0 +1,19 @@
+
+<launch>
+
+<node pkg="swarmbot" type="Narrow_path_detection.py" name="rob1_laser" output="screen" >
+	<remap from="/scan" to="/rob1/scan" />
+	<remap from="/bab" to="/rob1/bab" />
+</node>	
+
+<node pkg="swarmbot" type="Narrow_path_detection.py" name="rob2_laser" output="screen" >
+	<remap from="/scan" to="/rob2/scan" />
+	<remap from="/bab" to="/rob2/bab" />
+</node>
+
+<node pkg="swarmbot" type="Narrow_path_detection.py" name="rob3_laser" output="screen" >
+	<remap from="/scan" to="/rob3/scan" />
+	<remap from="/bab" to="/rob3/bab" />
+</node>
+
+</launch>

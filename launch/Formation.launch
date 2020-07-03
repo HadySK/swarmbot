@@ -1,0 +1,31 @@
+
+<launch>
+
+<group>
+<arg name= 'argv'/>
+<node pkg="swarmbot" type="Formation.py" name="rob1_formation" args = '0' output="screen" >
+	<remap from="/goal" to="/rob1/move_base_simple/goal" />
+	
+	
+</node>	
+</group>
+
+<group>
+<arg name= 'argv'/>
+<node pkg="swarmbot" type="Formation.py" name="rob2_formation" args = '1' output="screen" >
+	<remap from="/goal" to="/rob2/move_base_simple/goal" />
+	
+	
+	
+</node>
+</group>
+
+<group>
+<arg name= 'argv'/>
+<node pkg="swarmbot" type="Formation.py" name="rob3_formation" args = '2' output="screen" >
+	<remap from="/goal" to="/rob3/move_base_simple/goal" />
+	
+	
+</node>
+</group>
+</launch>
