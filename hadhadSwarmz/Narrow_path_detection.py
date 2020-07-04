@@ -14,36 +14,51 @@ import math
 
 from nav_msgs.srv import GetMap
 
+#This node senses if the leader robot moved through a narrow path like a door
 
-sub_rob = None
+sub_rob = None #Subscriber to the Laser scan topic of the robot
 
-position_ = []
-y = []
-l = 0
-l2 = 0
-pub_bab = rospy.Publisher('/bab',Bool,queue_size=1000)
+position_ = [] #stores in it the laser scan message
+y = [] #stores in it the left 180 degrees of the laser scan then the right 180 degrees 
+l = 0 #stores the minimum reading of the left 180 degrees
+l2 = 0 #stores the minimum reading of the right 180 degrees
 
+pub_bab = rospy.Publisher('/bab',Bool,queue_size=1000) #Publisher to publish on a topic if there is a narrow path
+
+#call back function to laser scan to compute if there is a narrow path
 def callbackrob1g(msg):
     global position_
     global y
     global l
     global l2
-    #1st pose is post with covariance
+    
+    #stores the laser scan message in the position_ variable
     position_ = msg.ranges
+    
+    #check in the first 180 degrees if there is a narrow path but didn't put the 3 degrees from 108 to 114
+    #which are 54 to 57 degrees as the wheels are sensed by the laser so there readings are not obstcales
     for i in range(108):
     	y = np.append(y,position_[i])
     for i in range(115,250):
     	y = np.append(y,position_[i])
+    
+    #gets the minimum value of the left 180 degrees
     l = np.amin(y)
+    
+    #clear the left 180 degrees to start putting the right 180 degrees in the list
     y = []
     for i in range(108):
     	y = np.append(y,position_[719-i])
     for i in range(115,250):
     	y = np.append(y,position_[719-i])
+    
+    #gets the minimum value of the right 180 degrees
     l2 = np.amin(y)
+    
+    #calls the function
     eb3t()
-    #print(position_[560])
 
+#This functions determine if the robot is going through a narrow path or not
 def eb3t():
 	
 	global l,l2
