@@ -23,6 +23,14 @@ sub_rob3_pos = None #Subscriber to the position topic of the 3rd robot
 pub_led  = None #Publisher to publish the robot ID of the leader
 pub_fol1 = None #Publisher to publish the robot ID of follower 1
 pub_fol2 = None	#Publisher to publish the robot ID of follower 2
+pub_goal = None
+goalpose = PoseStamped()
+
+Dist_rob1 = None
+Dist_rob2 = None	
+Dist_rob3 = None
+Distance = [Dist_rob1 , Dist_rob2 , Dist_rob3]
+Near_ID = 0 #Nearest Robot to Goal ID
 
 Pose_rob = Pose() #Pose variable to store in it the position of 1st robot
 Pose_rob2 = Pose() #Pose variable to store in it the position of 2nd robot
@@ -69,6 +77,27 @@ def callbackrob6(msg):
     global Pose_rob3
     Pose_rob3 = msg
 
+#call back function to calculate distance between each robot and the goal
+def distance(msg):
+	global Pose_rob
+	global Pose_rob2
+	global Pose_rob3
+	global Near_ID
+	global Distance
+	global goalpose
+	goalpose = msg 
+	Dist_rob1 = math.sqrt(math.pow(goalpose.pose.position.x - Pose_rob.position.x , 2) + math.pow(goalpose.pose.position.y- 		Pose_rob.position.y, 2))
+	Dist_rob2 = math.sqrt(math.pow(goalpose.pose.position.x - Pose_rob2.position.x , 2) + math.pow(goalpose.pose.position.y- 		Pose_rob2.position.y, 2))
+	Dist_rob3 = math.sqrt(math.pow(goalpose.pose.position.x - Pose_rob3.position.x , 2) + math.pow(goalpose.pose.position.y- 		Pose_rob3.position.y, 2))
+	
+	Distance = [Dist_rob1 , Dist_rob2 , Dist_rob3]
+	for i in range(0,3):
+		if(Distance[i] < Distance[Near_ID]):
+			Near_ID = i
+	print(Near_ID)
+	if(status == 1):
+		control()	
+
 #call this function when status = 1 to combute the status of the robot
 def control():
 	global robs_seen
@@ -79,6 +108,9 @@ def control():
 	global follower1
 	global follower2
 	global status
+	global Near_ID
+	global goalpose
+	global pub_goal
 	
 	pose = [Pose_rob , Pose_rob2 , Pose_rob3] #list containing all the robots positions
 	yaw_ = [0,0,0] #list to store in it all the robots position
@@ -125,15 +157,20 @@ def control():
 	yaw_[2] = euler[2]
 	
 	#sees the robot with highest number of robots seen to be leader
-	for i in range(0,3):
+	for i in range(1,3):
 		if(robs_seen[i] > robs_seen[leader]):
 			leader = i
-	
+		if(robs_seen[i] == robs_seen[leader]):
+			if(i == Near_ID):
+				leader = i;
+			elif(Distance[i] < Distance[leader]):
+				leader = i;
+			
 	#calculates the x and y positions of follower 1
 	followerx = pose[leader].position.x - shape_dist*math.sin((math.pi/3 + yaw_[leader]))
 	followery = pose[leader].position.y + shape_dist*math.cos((math.pi/3 + yaw_[leader]))
-    
-    #sees which robots that are not leader that is closest to follower1 position to be assigned as follower 1	
+	
+	#sees which robots that are not leader that is closest to follower1 position to be assigned as follower 1	
 	for i in range(0,3):
 		if(i != leader):
 			if(math.sqrt(math.pow(followerx - pose[i].position.x , 2) + math.pow(followery - pose[i].position.y , 2)) < distance):
@@ -160,7 +197,9 @@ def main():
 	global leader
 	global follower1
 	global follower2
-	
+	global pub_goal
+	global goalpose
+    	
 	rospy.init_node('Leader')
 	
 	sub_rob1 = rospy.Subscriber('/rob1/robots_seen',Int8,callbackrob1)
@@ -174,18 +213,21 @@ def main():
 	pub_fol1 = rospy.Publisher('/follower1',Int8,queue_size=1)
 	pub_fol2 = rospy.Publisher('/follower2',Int8,queue_size=1)
 	
+	sub_goal = rospy.Subscriber('/move_base_simple/goal',PoseStamped,distance)
+	pub_goal = rospy.Publisher('/goalx',PoseStamped,queue_size=1)
+	
 	rate = rospy.Rate(20)
 	while not rospy.is_shutdown() :
 		rate.sleep()#delay to wait until poses of the robots are published else the calculations may be wrong
 		rate.sleep()
 		rate.sleep()
-		rate.sleep()
-		if(status == 1):	
-			control()
+		rate.sleep()	
 		#keeps publishing the robots' ID on the topic of each status
 		pub_led.publish(leader)
 		pub_fol1.publish(follower1)
 		pub_fol2.publish(follower2)
+		if(goalpose != None):
+			pub_goal.publish(goalpose)
 	else:
 		rospy.logerr('Unknown state!')
 	

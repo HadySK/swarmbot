@@ -102,7 +102,8 @@ def control():
 			rob_seen += 1
 	if(D4 > 0 and D5 > 0 and D6 > 0):
 			rob_seen += 1
-	
+	#print(D1 , D2, D3)
+	#print(D4 , D5, D6)
 	print(rob_seen)
 	
 	#change status to 0 so it doesn't keeps calculating the robots seen while they are moving
