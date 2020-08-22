@@ -1,4 +1,4 @@
-# hswarmros
+# swarmbot ROS Package 
 Swarm robots simulation in gazebo and ROS
 
 Work in progress
