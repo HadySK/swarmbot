@@ -21,16 +21,8 @@
 
 <!--########################## RVIZ ############################-->
 
-  <!-- <arg name="rviz_file1" default="$(find swarmbot)/rviz/rob1.rviz" />
-  <arg name="rviz_file2" default="$(find swarmbot)/rviz/rob2.rviz" />
-  <arg name="rviz_file3" default="$(find swarmbot)/rviz/rob3.rviz" /> -->
   <arg name="rviz_files" default="$(find swarmbot)/rviz/robs.rviz" />
-  <!-- <node pkg="rviz" type="rviz" name="rviz_rob1" args="-d $(arg rviz_file1)" output="screen"/>
-  <node pkg="rviz" type="rviz" name="rviz_rob2" args="-d $(arg rviz_file2)" output="screen"/>
-  <node pkg="rviz" type="rviz" name="rviz_rob3" args="-d $(arg rviz_file3)" output="screen"/> -->
   <node pkg="rviz" type="rviz" name="rviz_robs" args="-d $(arg rviz_files)" output="screen"/>
-
-
 
 <!--#############################################################-->
 
@@ -50,9 +42,7 @@
 </include>
 
 <include file="$(find swarmbot)/launch/amcl_rob1.launch"/>
-<!--
-<include file="$(find swarmbot)/launch/moveb_rob1.launch"/>
--->
+
 <include file="$(find swarmbot)/launch/moveb_rob1_reached.launch"/>
 </group>
 
@@ -67,9 +57,7 @@
 </include>
 
 <include file="$(find swarmbot)/launch/amcl_rob2.launch"/>
-<!--  
-<include file="$(find swarmbot)/launch/moveb_rob2.launch"/>
--->
+
 <include file="$(find swarmbot)/launch/moveb_rob2_reached.launch"/>
 
 </group>
@@ -84,13 +72,12 @@
 </include>
 
 <include file="$(find swarmbot)/launch/amcl_rob3.launch"/>
-<!--
-<include file="$(find swarmbot)/launch/moveb_rob3.launch"/>
---> 
  
 <include file="$(find swarmbot)/launch/moveb_rob3_reached.launch"/>
 
 </group>
+
+<!--#############################################################-->
 
 <node pkg="swarmbot" type="swarmbot" name="rob1_pub_pose" output="screen" >
 	<param name="base_frame" value="/rob1_tf/base_link"/>
