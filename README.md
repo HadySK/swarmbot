@@ -1,7 +1,5 @@
-# hswarmros
+# SwarmROS
 Swarm robots simulation in gazebo and ROS
-
-Work in progress
 
 1) con_robots.launch >> to launch simulation environment
 #make sure it prints on the terminal 'odom recieved!', if not terminate in the terminal(ctrl+c) and type 'killall gzserver' in the terminal then relaunch.
